@@ -25,7 +25,8 @@ public class T03_JdbcTest {
 
 			// Connection객체 생성
 			String url = "jdbc:oracle:thin:@localhost:1521/xe";
-			String userId = "pc18";
+//			String userId = "pc18";
+			String userId = "hyungwook";
 			String password = "java";
 
 			// 실제적으로 OracleDriver가 사용되는 부분(커넥션 되는 부분)
