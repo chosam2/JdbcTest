@@ -98,54 +98,54 @@ public class T05_MemberInfoTest {
 		System.out.println();
 		System.out.print("삭제할 회원 ID를 입력하세요 >> ");
 		String memId = scan.next();
-		
+
 		try {
 			conn = DBUtil.getConnection();
-			
+
 			String sql = "delete from mymember where mem_id = ?";
-			
+
 			pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setString(1, memId);
-			
+
 			int cnt = pstmt.executeUpdate();
-			
-			if(cnt > 0) {
+
+			if (cnt > 0) {
 				System.out.println(memId + "회원 정보 삭제 성공");
 			} else {
 				System.out.println(memId + "회원 정보 삭제 실패"); // 회원정보가 없다는 뜻
 			}
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(memId + "회원 정보 삭제 실패"); // 회원정보가 없다는 뜻
 			e.printStackTrace();
 		} finally {
 			disConnect();
 		}
-		
+
 	}
 
 	/**
 	 * 회원정보를 수정하기 위한 메서드
 	 */
 	private void updateMember() {
-		
+
 		boolean chk = false;
 		String memId = ""; // 회원아이디 
-		
+
 		do {
 			System.out.print("수정할 회원ID를 입력하세요 >> ");
 			memId = scan.next();
-			
-			chk = chkMemberInfo(memId);	// true가 리턴되면 이미 존재한다는 의미.
-			if(chk==false) {
+
+			chk = chkMemberInfo(memId); // true가 리턴되면 이미 존재한다는 의미.
+			if (chk == false) {
 				System.out.println(memId + "회원은 없는 회원입니다.");
 				System.out.println("수정할 자료가 없으니 다시 입력해 주세요.");
 			}
-			
-		}while(chk == false);
-		
+
+		} while (chk == false);
+
 		System.out.println("수정할 내용을 입력하세요.");
-		
+
 		System.out.print("새로운 회원 이름 >> ");
 		String memName = scan.next();
 
@@ -155,35 +155,31 @@ public class T05_MemberInfoTest {
 		scan.nextLine(); // 버퍼 지우기
 		System.out.print("새로운 회원 주소 >> ");
 		String memAddr = scan.nextLine();
-		
+
 		try {
-				conn = DBUtil.getConnection();
-				String sql = "update mymember " + 
-					    " set mem_name = ? " +
-						" , mem_tel = ? " +
-					    " , mem_addr = ? " + 
-					    " where mem_id = ? ";
-				
+			conn = DBUtil.getConnection();
+			String sql = "update mymember " + " set mem_name = ? " + " , mem_tel = ? " + " , mem_addr = ? " + " where mem_id = ? ";
+
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, memName);	// 물음표의 순서에맞게 Index에 넣어주면됨.
+			pstmt.setString(1, memName); // 물음표의 순서에맞게 Index에 넣어주면됨.
 			pstmt.setString(2, memTel);
 			pstmt.setString(3, memAddr);
 			pstmt.setString(4, memId);
-			
+
 			int cnt = pstmt.executeUpdate();
-			
-			if(cnt > 0) {
+
+			if (cnt > 0) {
 				System.out.println(memName + "회원의 정보를 수정했습니다.");
 			} else {
 				System.out.println(memName + "회원의 정보를 수정에 실패했습니다.");
 			}
-				
-		}catch(SQLException e) {
-			
+
+		} catch (SQLException e) {
+
 		} finally {
 			disConnect();
 		}
-		
+
 	}
 
 	private void insertMember() {
@@ -218,27 +214,24 @@ public class T05_MemberInfoTest {
 
 		try {
 			conn = DBUtil.getConnection();
-			
-			String sql = "insert into mymember (mem_id, mem_name, mem_tel, mem_addr)" 
-				     + " values (?, ?, ?, ?)";
-			
+
+			String sql = "insert into mymember (mem_id, mem_name, mem_tel, mem_addr)" + " values (?, ?, ?, ?)";
+
 			pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setString(1, memId);
 			pstmt.setString(2, memName);
 			pstmt.setString(3, memTel);
 			pstmt.setString(4, memAddr);
-			
-			int cnt = pstmt.executeUpdate();	// insert기때문에 executeQuery()가 아니라 Update()임.
 
-			if(cnt > 0) {	 // cnt > 0 의미는 데이터가 잘 전달되었다는 의미.
+			int cnt = pstmt.executeUpdate(); // insert기때문에 executeQuery()가 아니라 Update()임.
+
+			if (cnt > 0) { // cnt > 0 의미는 데이터가 잘 전달되었다는 의미.
 				System.out.println(memId + "회원 추가 작업 성공!!");
 			} else {
 				System.out.println(memId + "회원 추가 작업 실패!!");
 			}
-			
-			
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
