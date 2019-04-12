@@ -63,7 +63,7 @@ public class T01_JdbcTest {
 
 			// rs.next() => ResultSet객체의 데이터를 가리키는 포인터를 다음 레코드로 이동시키고
 			//				그 곳에 자료가 있으면 true, 없으면 false를 반환한다.
-			while (rs.next()) {	// Iterator의 hasNext랑 비슷
+			while (rs.next()) {	// Iterator의 hasNext랑 비슷 => 커서값을 이용해서
 				// 컬럼의 자료를 가져오는 방법
 				// 방법1) rs.get자료형이름("컬럼명")
 				// 방법2) rs.get자료형이름(컬럼번호) => 컬럼번호는 1부터 시작

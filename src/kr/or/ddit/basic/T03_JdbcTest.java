@@ -21,7 +21,7 @@ public class T03_JdbcTest {
 
 		try {
 			// 드라이버 등록
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName("oracle.jdbc.driver.OracleDriver");	// 제대로 등록 안되어있으면 ClassNotFound에러뜸 
 
 			// Connection객체 생성
 			String url = "jdbc:oracle:thin:@localhost:1521/xe";
@@ -51,7 +51,6 @@ public class T03_JdbcTest {
 					" values(103, 'N103', '축산물')";
 			cnt = stmt.executeUpdate(sql);
 			System.out.println("세번째 반환값 : " + cnt);
-			
 			
 			
 

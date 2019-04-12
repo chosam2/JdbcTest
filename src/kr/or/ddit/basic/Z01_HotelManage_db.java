@@ -1,6 +1,5 @@
 package kr.or.ddit.basic;
 
-import java.security.interfaces.RSAKey;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class Z01_HotelManage {
+public class Z01_HotelManage_db {
 	Connection conn = null;
 	Statement stmt = null;
 	PreparedStatement pstmt = null;
@@ -17,7 +16,7 @@ public class Z01_HotelManage {
 	Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		Z01_HotelManage hm = new Z01_HotelManage();
+		Z01_HotelManage_db hm = new Z01_HotelManage_db();
 		hm.start();
 
 	}
@@ -46,6 +45,7 @@ public class Z01_HotelManage {
 				break;
 			case 4:
 				System.out.println("호텔 문닫습니다.");
+				sc.close();
 				System.exit(0);
 			default:
 				System.out.println("잘못 눌렀습니다.");
@@ -71,7 +71,7 @@ public class Z01_HotelManage {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
 			String url = "jdbc:oracle:thin:@localhost:1521/xe";
-			String userId = "hyungwook";
+			String userId = "pc18";
 			String password = "java";
 
 			conn = DriverManager.getConnection(url, userId, password);
@@ -143,7 +143,7 @@ public class Z01_HotelManage {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
 			String url = "jdbc:oracle:thin:@localhost:1521/xe";
-			String userId = "hyungwook";
+			String userId = "pc18";
 			String password = "java";
 
 			conn = DriverManager.getConnection(url, userId, password);
@@ -214,7 +214,7 @@ public class Z01_HotelManage {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
 			String url = "jdbc:oracle:thin:@localhost:1521/xe";
-			String userId = "hyungwook";
+			String userId = "pc18";
 			String password = "java";
 
 			conn = DriverManager.getConnection(url, userId, password);
@@ -275,6 +275,7 @@ public class Z01_HotelManage {
 					conn.close();
 				} catch (SQLException e2) {
 				}
+
 		}
 
 	}
