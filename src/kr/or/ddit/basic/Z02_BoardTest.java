@@ -10,11 +10,10 @@ import java.util.Scanner;
 import kr.or.ddit.util.DBUtil;
 
 /*
-	회원정보를 관리하는 프로그램을 작성하는데 
-	아래의 메뉴를 모두 구현하시오. (CRUD기능 구현하기)
-	(DB의 MYMEMBER테이블을 이용하여 작업한다.)
-	
-	* 자료 삭제는 회원ID를 입력 받아서 삭제한다.
+ 	위의 테이블을 작성하고 게시판을 관리하는
+	다음 기능들을 구현하시오.
+
+	기능 구현하기 ==> 전체 목록 출력, 새글작성, 수정, 삭제, 검색 
 	
 	예시메뉴)
 	----------------------
@@ -27,16 +26,26 @@ import kr.or.ddit.util.DBUtil;
 	----------------------
 	 
 	   
-// 회원관리 프로그램 테이블 생성 스크립트 
-create table mymember(
-    mem_id varchar2(8) not null,  -- 회원ID
-    mem_name varchar2(100) not null, -- 이름
-    mem_tel varchar2(50) not null, -- 전화번호
-    mem_addr varchar2(128)    -- 주소
+------------------------------------------------------------
+
+게시판 테이블 구조 및 시퀀스
+
+create table jdbc_board(
+    board_no number not null,  -- 번호(자동증가)
+    board_title varchar2(100) not null, -- 제목
+    board_writer varchar2(50) not null, -- 작성자
+    board_date date not null,   -- 작성날짜
+    board_content clob,     -- 내용
+    constraint pk_jdbc_board primary key (board_no)
 );
+create sequence board_seq
+    start with 1   -- 시작번호
+    increment by 1; -- 증가값
+      
+----------------------------------------------------------
 
 */
-public class T05_MemberInfoTest {
+public class Z02_BoardTest {
 
 	private Connection conn;
 	private Statement stmt;
@@ -52,11 +61,11 @@ public class T05_MemberInfoTest {
 		System.out.println();
 		System.out.println("----------------------");
 		System.out.println("  === 작 업 선 택 ===");
-		System.out.println("  1. 자료 입력");
-		System.out.println("  2. 자료 삭제");
-		System.out.println("  3. 자료 수정");
-		System.out.println("  4. 전체 자료 출력");
-		System.out.println("  5. 작업 끝.");
+		System.out.println("  1. 게시판 글쓰기");
+		System.out.println("  2. 게시판 글삭제");
+		System.out.println("  3. 게시판 글수정");
+		System.out.println("  4. 게시판 전체조회");
+		System.out.println("  5. 게시판 끝내기");
 		System.out.println("----------------------");
 		System.out.print("원하는 작업 선택 >> ");
 	}
@@ -71,16 +80,16 @@ public class T05_MemberInfoTest {
 			choice = scan.nextInt(); // 메뉴번호 입력받기
 			switch (choice) {
 			case 1: // 자료 입력
-				insertMember();
+				writeBoard();
 				break;
 			case 2: // 자료 삭제
-				deleteMember();
+				deleteBoard();
 				break;
 			case 3: // 자료 수정
-				updateMember();
+				modifyBoard();
 				break;
 			case 4: // 전체 자료 출력
-				displayMemberAll();
+				showAllList();
 				break;
 			case 5: // 작업 끝
 				System.out.println("작업을 마칩니다.");
@@ -92,9 +101,9 @@ public class T05_MemberInfoTest {
 	}
 
 	/**
-	 * 회원정보 삭제하기 위한 메서드
+	 * 게시글 삭제하기 위한 메서드
 	 */
-	private void deleteMember() {
+	private void deleteBoard() {
 		System.out.println();
 		System.out.print("삭제할 회원 ID를 입력하세요 >> ");
 		String memId = scan.next();
@@ -125,9 +134,9 @@ public class T05_MemberInfoTest {
 	}
 
 	/**
-	 * 회원정보를 수정하기 위한 메서드
+	 * 게시글을 수정하기 위한 메서드
 	 */
-	private void updateMember() {
+	private void modifyBoard() {
 
 		boolean chk = false;
 		String memId = ""; // 회원아이디 
@@ -136,7 +145,7 @@ public class T05_MemberInfoTest {
 			System.out.print("수정할 회원ID를 입력하세요 >> ");
 			memId = scan.next();
 
-			chk = chkMemberInfo(memId); // true가 리턴되면 이미 존재한다는 의미.
+			chk = chkWriterInfo(memId); // true가 리턴되면 이미 존재한다는 의미.
 			if (chk == false) {
 				System.out.println(memId + "회원은 없는 회원입니다.");
 				System.out.println("수정할 자료가 없으니 다시 입력해 주세요.");
@@ -182,7 +191,7 @@ public class T05_MemberInfoTest {
 
 	}
 
-	private void insertMember() {
+	private void writeBoard() {
 
 		boolean chk = false;
 		String memId = "";
@@ -193,7 +202,7 @@ public class T05_MemberInfoTest {
 			System.out.print("회원 ID >> ");
 			memId = scan.next();
 
-			chk = chkMemberInfo(memId);
+			chk = chkWriterInfo(memId);
 
 			if (chk) {
 				System.out.println("회원ID가 " + memId + "인 회원이 이미 존재합니다.");
@@ -241,11 +250,11 @@ public class T05_MemberInfoTest {
 	}
 
 	/**
-	 * 회원아이디를 이용하여 해당 회원정보가 존재하는지 체크하는 메서드
-	 * @param memId
+	 * 작성자 아이디를 이용하여 해당 작성자 정보가 존재하는지 체크하는 메서드
+	 * @param writer
 	 * @return
 	 */
-	private boolean chkMemberInfo(String memId) {
+	private boolean chkWriterInfo(String writer) {
 
 		boolean isExist = false;
 
@@ -256,7 +265,7 @@ public class T05_MemberInfoTest {
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, memId);
+			pstmt.setString(1, writer);
 
 			rs = pstmt.executeQuery(); // select니깐 던져줌.
 
@@ -279,7 +288,7 @@ public class T05_MemberInfoTest {
 		return isExist;
 	}
 
-	private void displayMemberAll() {
+	private void showAllList() {
 		System.out.println();
 		System.out.println("--------------------------------------------------------------------");
 		System.out.println(" ID		이름		전화번호				주소");
@@ -295,12 +304,12 @@ public class T05_MemberInfoTest {
 			rs = stmt.executeQuery(sql); // select 쿼리이기때문에 executeQuery로 던짐
 
 			while (rs.next()) {
-				String memId = rs.getString("mem_id");
+				String writer = rs.getString("writer");
 				String memName = rs.getString("mem_name");
 				String memTel = rs.getString("mem_tel");
 				String memAddr = rs.getString("mem_addr");
 
-				System.out.println(memId + "		" + memName + "		" + memTel + "		" + memAddr);
+				System.out.println(writer + "		" + memName + "		" + memTel + "		" + memAddr);
 			}
 
 			System.out.println("--------------------------------------------------------------------");
@@ -314,9 +323,6 @@ public class T05_MemberInfoTest {
 
 	}
 
-	/**
-	 *  연결 끊을 떄 finally에 들어갈 예외처리.
-	 */
 	private void disConnect() {
 		if (rs != null)
 			try {
@@ -342,8 +348,8 @@ public class T05_MemberInfoTest {
 	}
 
 	public static void main(String[] args) {
-		T05_MemberInfoTest memObj = new T05_MemberInfoTest();
-		memObj.start();
+		Z02_BoardTest board = new Z02_BoardTest();
+		board.start();
 	}
 
 }

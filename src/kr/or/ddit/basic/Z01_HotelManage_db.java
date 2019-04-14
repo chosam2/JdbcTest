@@ -71,7 +71,7 @@ public class Z01_HotelManage_db {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
 			String url = "jdbc:oracle:thin:@localhost:1521/xe";
-			String userId = "pc18";
+			String userId = "hyungwook";
 			String password = "java";
 
 			conn = DriverManager.getConnection(url, userId, password);
@@ -143,7 +143,7 @@ public class Z01_HotelManage_db {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
 			String url = "jdbc:oracle:thin:@localhost:1521/xe";
-			String userId = "pc18";
+			String userId = "hyungwook";
 			String password = "java";
 
 			conn = DriverManager.getConnection(url, userId, password);
@@ -214,7 +214,7 @@ public class Z01_HotelManage_db {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
 			String url = "jdbc:oracle:thin:@localhost:1521/xe";
-			String userId = "pc18";
+			String userId = "hyungwook";
 			String password = "java";
 
 			conn = DriverManager.getConnection(url, userId, password);
