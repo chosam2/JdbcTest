@@ -243,44 +243,44 @@ public class Z02_BoardTest2 {
 
 	}
 
-	/**
-	 * 회원아이디를 이용하여 해당 회원정보가 존재하는지 체크하는 메서드
-	 * @param writer
-	 * @return
-	 */
-	private boolean chkMemberInfo(String writer) {
-
-		boolean isExist = false;
-
-		try {
-			conn = DBUtil.getConnection();
-
-			String sql = "select count(*) as cnt from jdbc_board where writer= ?";
-
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, writer);
-
-			rs = pstmt.executeQuery(); // select니깐 던져줌.
-
-			int cnt = 0;
-
-			if (rs.next()) { // 한건밖에 안나올테니깐 if로 해도 무방함. 여러건이면 while(rs.next())
-				//				rs.getInt(cnt);
-				cnt = rs.getInt(1);
-			}
-
-			if (cnt > 0) { // 0 이상이면 true로
-				isExist = true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			disConnect();
-		}
-		return isExist;
-	}
+//	/**
+//	 * 회원아이디를 이용하여 해당 회원정보가 존재하는지 체크하는 메서드
+//	 * @param writer
+//	 * @return
+//	 */
+//	private boolean chkMemberInfo(String writer) {
+//
+//		boolean isExist = false;
+//
+//		try {
+//			conn = DBUtil.getConnection();
+//
+//			String sql = "select count(*) as cnt from jdbc_board where writer= ?";
+//
+//			pstmt = conn.prepareStatement(sql);
+//
+//			pstmt.setString(1, writer);
+//
+//			rs = pstmt.executeQuery(); // select니깐 던져줌.
+//
+//			int cnt = 0;
+//
+//			if (rs.next()) { // 한건밖에 안나올테니깐 if로 해도 무방함. 여러건이면 while(rs.next())
+//				//				rs.getInt(cnt);
+//				cnt = rs.getInt(1);
+//			}
+//
+//			if (cnt > 0) { // 0 이상이면 true로
+//				isExist = true;
+//			}
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			disConnect();
+//		}
+//		return isExist;
+//	}
 
 	/**
 	 *  연결 끊을 떄 finally에 들어갈 예외처리.

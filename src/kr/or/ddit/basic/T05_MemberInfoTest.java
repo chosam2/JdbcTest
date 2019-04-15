@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import kr.or.ddit.util.DBUtil;
+import kr.or.ddit.util.DBUtil2;
 
 /*
 	회원정보를 관리하는 프로그램을 작성하는데 
@@ -47,6 +48,7 @@ public class T05_MemberInfoTest {
 
 	/**
 	 * 메뉴를 출력하는 메서드
+	 * View 
 	 */
 	public void displayMenu() {
 		System.out.println();
@@ -63,6 +65,7 @@ public class T05_MemberInfoTest {
 
 	/**
 	 * 프로그램 시작메서드
+	 * Controller 기능
 	 */
 	public void start() {
 		int choice;
@@ -100,7 +103,7 @@ public class T05_MemberInfoTest {
 		String memId = scan.next();
 
 		try {
-			conn = DBUtil.getConnection();
+			conn = DBUtil2.getConnection();
 
 			String sql = "delete from mymember where mem_id = ?";
 
@@ -126,6 +129,8 @@ public class T05_MemberInfoTest {
 
 	/**
 	 * 회원정보를 수정하기 위한 메서드
+	 * Service 기능 
+	 * 나중에는 DAO로 뺄 예정
 	 */
 	private void updateMember() {
 
@@ -315,7 +320,7 @@ public class T05_MemberInfoTest {
 	}
 
 	/**
-	 *  연결 끊을 떄 finally에 들어갈 예외처리.
+	 *  연결 끊을 때 finally에 들어갈 예외처리.
 	 */
 	private void disConnect() {
 		if (rs != null)
